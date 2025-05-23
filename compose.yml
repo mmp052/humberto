@@ -1,0 +1,68 @@
+name: store
+
+services:
+
+  db:
+    image: postgres:latest
+    hostname: db
+    environment:
+      POSTGRES_DB: ${DATABASE_DB:-store}
+      POSTGRES_USER: ${DATABASE_USER:-store}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-store}
+    volumes:
+      - $VOLUME/postgres/store:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  account:
+    hostname: account
+    build:
+      context: account-service
+    environment:
+      DATABASE_HOST: ${DATABASE_HOST:-db}
+      DATABASE_DB: ${DATABASE_DB:-store}
+      DATABASE_USER: ${DATABASE_USER:-store}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-store}
+
+  auth:
+    hostname: auth
+    image: mmp052/auth
+    build:
+      context: auth-service
+    environment:
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-yrBBgYlvJQeslzFlgX9MFZccToI2fjRFqualquercoisa}
+
+  gateway:
+    hostname: gateway
+    build:
+      context: gateway-service
+    image: mmp052/gateway
+    environment:
+      - LOGGING_LEVEL_STORE=${LOGGING_LEVEL_STORE:-debug}
+    ports:
+      - 8080:8080
+
+  product:
+    hostname: product
+    build:
+      context: product-service
+    environment:
+      DATABASE_HOST: ${DATABASE_HOST:-db}
+      DATABASE_DB: ${DATABASE_DB:-store}
+      DATABASE_USER: ${DATABASE_USER:-store}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-store}
+
+  order:
+    hostname: order
+    build:
+      context: order-service
+    environment:
+      DATABASE_HOST: ${DATABASE_HOST:-db}
+      DATABASE_DB: ${DATABASE_DB:-store}
+      DATABASE_USER: ${DATABASE_USER:-store}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-store}
+
+  # exchange:
+  #   build:
+  #     context: ./exchange-service
+  #     dockerfile: Dockerfile

@@ -1,0 +1,6 @@
+/home/mateus/humberto/auth-service/src/main/java/store/auth/AuthApplication.java
+/home/mateus/humberto/auth-service/src/main/java/store/auth/AuthParser.java
+/home/mateus/humberto/auth-service/src/main/java/store/auth/AuthResource.java
+/home/mateus/humberto/auth-service/src/main/java/store/auth/AuthService.java
+/home/mateus/humberto/auth-service/src/main/java/store/auth/JwtService.java
+/home/mateus/humberto/auth-service/src/main/java/store/auth/Register.java

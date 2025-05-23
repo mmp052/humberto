@@ -1,0 +1,7 @@
+main/java/store/auth/AuthParser.class
+main/java/store/auth/Register.class
+main/java/store/auth/Register$RegisterBuilder.class
+main/java/store/auth/AuthApplication.class
+main/java/store/auth/AuthService.class
+main/java/store/auth/JwtService.class
+main/java/store/auth/AuthResource.class

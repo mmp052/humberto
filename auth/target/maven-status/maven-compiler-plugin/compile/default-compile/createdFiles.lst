@@ -1,0 +1,9 @@
+main/java/store/auth/RegisterIn.class
+main/java/store/auth/TokenOut$TokenOutBuilder.class
+main/java/store/auth/TokenOut.class
+main/java/store/auth/RegisterIn$RegisterInBuilder.class
+main/java/store/auth/LoginIn$LoginInBuilder.class
+main/java/store/auth/SolveOut.class
+main/java/store/auth/AuthController.class
+main/java/store/auth/SolveOut$SolveOutBuilder.class
+main/java/store/auth/LoginIn.class

@@ -6,7 +6,7 @@ spring:
     name: account
 
   datasource:
-    url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT:5432}/store
+    url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT:5432}/${DATABASE_DB:store}
     username: ${DATABASE_USER:store}
     password: ${DATABASE_PASSWORD:store}
     driver-class-name: org.postgresql.Driver

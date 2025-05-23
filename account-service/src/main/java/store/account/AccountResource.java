@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import store.account.AccountController;
+import store.account.AccountIn;
+import store.account.AccountOut;
+
 @RestController
 public class AccountResource implements AccountController {
 

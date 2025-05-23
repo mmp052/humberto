@@ -1,0 +1,7 @@
+/home/mateus/humberto/gateway-service/src/main/java/store/gateway/GatewayApplication.java
+/home/mateus/humberto/gateway-service/src/main/java/store/gateway/GatewayResource.java
+/home/mateus/humberto/gateway-service/src/main/java/store/gateway/security/AuthorizationFilter.java
+/home/mateus/humberto/gateway-service/src/main/java/store/gateway/security/CorsFilter.java
+/home/mateus/humberto/gateway-service/src/main/java/store/gateway/security/RouterValidator.java
+/home/mateus/humberto/gateway-service/src/main/java/store/gateway/security/SolveOut.java
+/home/mateus/humberto/gateway-service/src/main/java/store/gateway/security/TokenOut.java
