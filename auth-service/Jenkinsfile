@@ -1,13 +1,13 @@
 pipeline {
     agent any
     environment {
-        SERVICE = 'account-service'
+        SERVICE = 'auth-service'
         NAME = "mmp052/${env.SERVICE}"
     }
     stages {
         stage('Dependecies') {
             steps {
-                build job: 'account', wait: true
+                build job: 'auth', wait: true
             }
         }
         stage('Build') { 

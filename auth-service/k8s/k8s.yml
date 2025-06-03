@@ -1,0 +1,124 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: auth-secret
+  namespace: default
+type: Opaque
+data:
+  postgres-host: cG9zdGdyZXM=
+  postgres-db: c3RvcmU=
+  postgres-user: c3RvcmU=
+  postgres-password: NWVDcjN0
+  jwt-secret-key: eXJCQmdZbHZKUWVzbHpGbGdYOU1GWmNjVG9JMmZqUkZxdWFscXVlcmNvaXNh
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-config
+  namespace: default
+data:
+  spring.profiles.active: "production"
+  server.port: "8080"
+  logging.level.store: "debug"
+  jwt.algorithm: "HS256"
+  volume: "./volume"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+  namespace: default
+  labels:
+    app: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+      - name: auth
+        image: mmp052/auth-service:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DATABASE_HOST
+          valueFrom:
+            secretKeyRef:
+              name: auth-secret 
+              key: postgres-host
+        - name: DATABASE_DB
+          valueFrom:
+            secretKeyRef:
+              name: auth-secret
+              key: postgres-db
+        - name: DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: auth-secret
+              key: postgres-user
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: auth-secret
+              key: postgres-password
+        - name: JWT_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: auth-secret
+              key: jwt-secret-key
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom:
+            configMapKeyRef:
+              name: auth-config
+              key: spring.profiles.active
+        - name: SERVER_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: auth-config
+              key: server.port
+        - name: LOGGING_LEVEL_STORE
+          valueFrom:
+            configMapKeyRef:
+              name: auth-config
+              key: logging.level.store
+        - name: JWT_ALGORITHM
+          valueFrom:
+            configMapKeyRef:
+              name: auth-config
+              key: jwt.algorithm
+        - name: VOLUME
+          valueFrom:
+            configMapKeyRef:
+              name: auth-config
+              key: volume
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth
+  namespace: default
+  labels:
+    app: auth
+spec:
+  selector:
+    app: auth
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP

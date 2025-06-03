@@ -1,4 +1,3 @@
-store/account/AccountApplication.class
 store/account/AccountIn.class
 store/account/AccountOut$AccountOutBuilder.class
 store/account/AccountIn$AccountInBuilder.class
