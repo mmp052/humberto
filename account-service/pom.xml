@@ -59,6 +59,7 @@
             <scope>runtime</scope>
         </dependency>
 
+
     </dependencies>
 
     <dependencyManagement>
@@ -70,13 +71,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
-            <dependency>
-                <groupId>store</groupId>
-                <artifactId>account</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            
         </dependencies>
     </dependencyManagement>
 

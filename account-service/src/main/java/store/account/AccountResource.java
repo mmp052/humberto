@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -15,11 +13,9 @@ public class AccountResource implements AccountController {
     private AccountService accountService;
 
     @Override
-    public ResponseEntity<AccountOut> create(
-        @RequestBody AccountIn accountIn
-    ) {
+    public ResponseEntity<AccountOut> create(AccountIn accountIn) {
         Account created = accountService.create(AccountParser.to(accountIn));
-        return ResponseEntity.ok(AccountParser.to(created));
+        return ResponseEntity.ok().body(AccountParser.to(created));
     }
 
     @Override
@@ -30,9 +26,7 @@ public class AccountResource implements AccountController {
     }
 
     @Override
-    public ResponseEntity<AccountOut> findByEmailAndPassword(
-        @RequestBody AccountIn accountIn        // ← add @RequestBody aqui também
-    ) {
+    public ResponseEntity<AccountOut> findByEmailAndPassword(AccountIn accountIn) {
         Account account = accountService.findByEmailAndPassword(
             accountIn.email(),
             accountIn.password()
@@ -43,9 +37,7 @@ public class AccountResource implements AccountController {
     }
 
     @Override
-    public ResponseEntity<AccountOut> whoami(
-        @RequestHeader("id-account") String idAccount   // ← e @RequestHeader aqui
-    ) {
+    public ResponseEntity<AccountOut> whoami(String idAccount) {
         return ResponseEntity
             .ok()
             .body(AccountParser.to(accountService.findById(idAccount)));

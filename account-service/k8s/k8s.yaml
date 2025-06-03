@@ -1,0 +1,124 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: account-secret
+  namespace: default
+type: Opaque
+data:
+  postgres-host: cG9zdGdyZXM=
+  postgres-db: c3RvcmU=
+  postgres-user: c3RvcmU=
+  postgres-password: NWVDcjN0
+  jwt-secret-key: eXJCQmdZbHZKUWVzbHpGbGdYOU1GWmNjVG9JMmZqUkZxdWFscXVlcmNvaXNh
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: account-config
+  namespace: default
+data:
+  spring.profiles.active: "production"
+  server.port: "8080"
+  logging.level.store: "debug"
+  jwt.algorithm: "HS256"
+  volume: "./volume"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account
+  namespace: default
+  labels:
+    app: account
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: account
+  template:
+    metadata:
+      labels:
+        app: account
+    spec:
+      containers:
+      - name: account
+        image: mmp052/account:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DATABASE_HOST
+          valueFrom:
+            secretKeyRef:
+              name: account-secret 
+              key: postgres-host
+        - name: DATABASE_DB
+          valueFrom:
+            secretKeyRef:
+              name: account-secret
+              key: postgres-db
+        - name: DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: account-secret
+              key: postgres-user
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: account-secret
+              key: postgres-password
+        - name: JWT_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: account-secret
+              key: jwt-secret-key
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom:
+            configMapKeyRef:
+              name: account-config
+              key: spring.profiles.active
+        - name: SERVER_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: account-config
+              key: server.port
+        - name: LOGGING_LEVEL_STORE
+          valueFrom:
+            configMapKeyRef:
+              name: account-config
+              key: logging.level.store
+        - name: JWT_ALGORITHM
+          valueFrom:
+            configMapKeyRef:
+              name: account-config
+              key: jwt.algorithm
+        - name: VOLUME
+          valueFrom:
+            configMapKeyRef:
+              name: account-config
+              key: volume
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: account
+  namespace: default
+  labels:
+    app: account
+spec:
+  selector:
+    app: account
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP

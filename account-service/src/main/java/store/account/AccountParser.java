@@ -1,8 +1,5 @@
 package store.account;
 
-import store.account.AccountIn;
-import store.account.AccountOut;
-
 public class AccountParser {
 
     public static Account to(AccountIn in) {
