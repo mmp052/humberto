@@ -1,4 +1,4 @@
-package main.java.store.auth;
+package store.auth;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

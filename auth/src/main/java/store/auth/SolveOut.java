@@ -1,4 +1,4 @@
-package main.java.store.auth;
+package store.auth;
 
 import lombok.Builder;
 import lombok.experimental.Accessors;
